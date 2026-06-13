@@ -1,21 +1,69 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 const STAGES = [
-  { name:'Source', icon:'📁', desc:'GitHub push triggers workflow', color:'#58a6ff', time:'0s' },
-  { name:'Build', icon:'🔨', desc:'npm install + Next.js build', color:'#39d0d8', time:'45s' },
-  { name:'Test', icon:'🧪', desc:'Jest unit + integration tests', color:'#a371f7', time:'1m 12s' },
-  { name:'Security', icon:'🛡', desc:'SAST/DAST + dependency scan', color:'#f0883e', time:'38s' },
-  { name:'Deploy', icon:'🚀', desc:'Push to ECS Fargate + S3', color:'#3fb950', time:'28s' },
-  { name:'Monitor', icon:'📊', desc:'CloudWatch health checks', color:'#3fb950', time:'Live' },
+  { name:'Source', icon:'📁', desc:'GitHub · main branch', detail:'Checkout a3f9b2c', color:'#3fb950', time:'0m 03s', status:'passed' },
+  { name:'Build', icon:'🔨', desc:'Docker · node:18-alpine', detail:'Image: ecr/nextextile:88', color:'#3fb950', time:'1m 12s', status:'passed' },
+  { name:'Unit Tests', icon:'🧪', desc:'Jest · 137 tests', detail:'Coverage: 87.4%', color:'#3fb950', time:'0m 47s', status:'passed' },
+  { name:'Security', icon:'🛡️', desc:'Snyk · 0 vulnerabilities', detail:'All checks passed', color:'#3fb950', time:'0m 31s', status:'passed' },
+  { name:'Deploy', icon:'🚀', desc:'AWS Amplify · SSR', detail:'nextextile.xyz → live', color:'#3fb950', time:'1m 28s', status:'passed' },
+  { name:'Monitor', icon:'📊', desc:'CloudWatch · healthy', detail:'All systems operational', color:'#3fb950', time:'0m 12s', status:'passed' },
+]
+
+const LOGS = [
+  { stage:'Source Code', status:'PASSED', lines:[
+    '✓ Checkout main branch',
+    '✓ Pull commit a3f9b2c',
+    '→ Author: Ahmad Karimov',
+    '→ Files changed: 14',
+    '✓ Source ready in 3s',
+  ]},
+  { stage:'Build', status:'PASSED', lines:[
+    '✓ Docker build initiated',
+    '+ Pulling base image node:18-alpine',
+    '✓ npm install (234 packages)',
+    '✓ npm run build — Next.js 16',
+    '✓ Image pushed: ecr/nextextile:88',
+    '→ Image size: 148MB',
+  ]},
+  { stage:'Unit Tests', status:'PASSED', lines:[
+    '✓ Test Suite: ERP (47 tests)',
+    '✓ Test Suite: CRM (38 tests)',
+    '✓ Test Suite: WMS (52 tests)',
+    '→ Coverage: 87.4%',
+    '✓ All 137 tests passed',
+  ]},
+  { stage:'Security Scan', status:'PASSED', lines:[
+    '✓ Snyk dependency scan complete',
+    '✓ 0 critical vulnerabilities',
+    '✓ 0 high vulnerabilities',
+    '→ 2 low (accepted)',
+    '✓ OWASP Top 10 — clear',
+  ]},
+  { stage:'Deploy', status:'PASSED', lines:[
+    '✓ Connecting to AWS Amplify...',
+    '✓ Uploading build artifacts...',
+    '✓ SSR functions deployed',
+    '✓ CloudFront cache invalidated',
+    '✓ Live: https://nextextile.xyz',
+    '✓ Live: https://www.nextextile.xyz',
+    '✓ Zero-downtime deployment complete',
+  ]},
+  { stage:'Monitor', status:'PASSED', lines:[
+    '✓ CloudWatch health check — OK',
+    '✓ ERP response: 48ms',
+    '✓ CRM response: 31ms',
+    '✓ WMS response: 55ms',
+    '✓ All Systems Operational',
+  ]},
 ]
 
 const HISTORY = [
-  { id:'#87',msg:'feat: WMS auto-scaling rules',branch:'main',time:'2m 14s',status:'running',by:'A. Karimov'},
-  { id:'#86',msg:'fix: CRM email validation',branch:'main',time:'4m 01s',status:'passed',by:'N. Rashidova'},
-  { id:'#85',msg:'chore: update dependencies',branch:'main',time:'3m 44s',status:'passed',by:'S. Toshmatov'},
-  { id:'#84',msg:'feat: inventory CSV export',branch:'feat/csv',time:'4m 22s',status:'passed',by:'A. Karimov'},
-  { id:'#83',msg:'fix: order status race condition',branch:'hotfix',time:'—',status:'failed',by:'A. Karimov'},
+  { id:'#88', msg:'fix: domain DNS configuration update', branch:'main', time:'3m 33s', status:'passed', by:'A. Karimov', date:'2026-06-13 08:47', url:'https://nextextile.xyz' },
+  { id:'#87', msg:'feat: add compare & improvements pages', branch:'main', time:'4m 12s', status:'passed', by:'A. Karimov', date:'2026-06-13 08:31', url:'https://nextextile.xyz' },
+  { id:'#86', msg:'fix: use npm install instead of npm ci', branch:'main', time:'3m 58s', status:'passed', by:'A. Karimov', date:'2026-06-13 08:04', url:'https://nextextile.xyz' },
+  { id:'#85', msg:'Initial commit: NexTextile cloud dashboard', branch:'main', time:'4m 44s', status:'passed', by:'A. Karimov', date:'2026-06-13 07:52', url:'https://nextextile.xyz' },
+  { id:'#84', msg:'chore: amplify.yml build configuration', branch:'main', time:'—', status:'failed', by:'A. Karimov', date:'2026-06-13 07:41', url:'' },
 ]
 
 const YAML = `name: NexTextile CI/CD Pipeline
@@ -30,7 +78,6 @@ env:
   AWS_REGION: eu-west-1
   ECR_REPOSITORY: nextextile-app
   ECS_CLUSTER: nextextile-prod
-  ECS_SERVICE: nextextile-service
 
 jobs:
   build-and-test:
@@ -38,14 +85,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js 18
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '18'
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Run tests
         run: npm test -- --coverage
@@ -67,111 +114,126 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: \${{ env.AWS_REGION }}
 
-      - name: Build & push Docker image to ECR
+      - name: Deploy to AWS Amplify
         run: |
-          aws ecr get-login-password | docker login --username AWS \\
-            --password-stdin \${{ secrets.ECR_REGISTRY }}
-          docker build -t \$ECR_REPOSITORY .
-          docker push \${{ secrets.ECR_REGISTRY }}/\$ECR_REPOSITORY:latest
-
-      - name: Deploy to ECS Fargate
-        run: |
-          aws ecs update-service \\
-            --cluster \$ECS_CLUSTER \\
-            --service \$ECS_SERVICE \\
-            --force-new-deployment`
+          aws amplify start-job \\
+            --app-id d294vf1jo5bdm \\
+            --branch-name main \\
+            --job-type RELEASE`
 
 export default function CICD() {
-  const [active, setActive] = useState(4)
-  const [pct, setPct] = useState(62)
-
-  useEffect(()=>{
-    const t = setInterval(()=>{
-      setPct(p=>{ const n=p+1; if(n>=100){ setActive(a=>Math.min(a+1,5)); return 0 } return n })
-    },150)
-    return ()=>clearInterval(t)
-  },[])
-
-  const SC:Record<string,string> = { passed:'t-g', failed:'t-r', running:'t-b' }
+  const [activeLog, setActiveLog] = useState(0)
+  const SC: Record<string, string> = { passed: 't-g', failed: 't-r', running: 't-b' }
 
   return (
     <>
-      <header style={{background:'var(--bg2)',borderBottom:'1px solid var(--bd)',padding:'14px 28px',display:'flex',alignItems:'center',justifyContent:'space-between',position:'sticky',top:0,zIndex:50}}>
+      <header style={{ background: 'var(--bg2)', borderBottom: '1px solid var(--bd)', padding: '14px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 50 }}>
         <div>
-          <div style={{fontSize:17,fontWeight:600}}>CI/CD Pipeline</div>
-          <div style={{fontSize:11,color:'var(--tx2)',marginTop:2}}>GitHub Actions → AWS ECS Fargate — Continuous Deployment</div>
+          <div style={{ fontSize: 17, fontWeight: 600 }}>CI/CD Pipeline</div>
+          <div style={{ fontSize: 11, color: 'var(--tx2)', marginTop: 2 }}>GitHub Actions → AWS Amplify · nextextile.xyz</div>
         </div>
-        <span className="tag t-b">● Build #87 Running</span>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <a href="https://nextextile.xyz" target="_blank" rel="noreferrer" style={{ fontSize: 11, color: 'var(--cyan)', textDecoration: 'none' }}>🌐 nextextile.xyz ↗</a>
+          <span className="tag t-g">● Build #88 Deployed</span>
+        </div>
       </header>
 
-      <div style={{padding:28}}>
-        {/* Pipeline visual */}
-        <div className="card" style={{marginBottom:24}}>
-          <div style={{fontSize:14,fontWeight:600,marginBottom:4}}>Live Pipeline — Build #87</div>
-          <div style={{fontSize:11,color:'var(--tx2)',marginBottom:20}}>main · a3f9b2c · "feat: WMS auto-scaling rules"</div>
-          <div style={{display:'flex',alignItems:'stretch',gap:0,overflowX:'auto'}}>
-            {STAGES.map((s,i)=>{
-              const done = i<active, running=i===active, pending=i>active
-              return (
-                <div key={s.name} style={{display:'flex',alignItems:'center',flex:1}}>
-                  <div style={{
-                    flex:1,background:done?`rgba(63,185,80,.08)`:running?`rgba(88,166,255,.1)`:`rgba(0,0,0,.2)`,
-                    border:`1px solid ${done?'var(--green)':running?s.color:'var(--bd)'}`,
-                    borderRadius:10,padding:'14px 12px',textAlign:'center',
-                    opacity:pending?.4:1,transition:'all .3s',minWidth:110
-                  }}>
-                    <div style={{fontSize:22,marginBottom:6}}>{s.icon}</div>
-                    <div style={{fontSize:12,fontWeight:600,color:done?'var(--green)':running?s.color:'var(--tx2)',marginBottom:3}}>{s.name}</div>
-                    <div style={{fontSize:10,color:'var(--tx3)',marginBottom:5}}>{s.desc}</div>
-                    <div style={{fontSize:10,color:done?'var(--green)':running?s.color:'var(--tx3)',fontFamily:'monospace'}}>
-                      {done?'✓ '+s.time:running?'⟳ '+s.time:s.time}
-                    </div>
-                    {running && <div style={{marginTop:8}}><div className="prog"><div className="prog-bar" style={{width:`${pct}%`,background:s.color,transition:'width .15s'}}></div></div></div>}
-                  </div>
-                  {i<5 && <div style={{width:24,height:2,background:done?'var(--green)':'var(--bd)',flexShrink:0,margin:'0 2px'}}></div>}
-                </div>
-              )
-            })}
-          </div>
-        </div>
-
+      <div style={{ padding: 28 }}>
         {/* Stats */}
-        <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:18,marginBottom:24}}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 18, marginBottom: 24 }}>
           {[
-            {label:'Deployments (30d)',val:'34',color:'var(--blue)',icon:'🚀'},
-            {label:'Success Rate',val:'97.1%',color:'var(--green)',icon:'✅'},
-            {label:'Avg Build Time',val:'3m 54s',color:'var(--cyan)',icon:'⏱'},
-            {label:'Coverage',val:'87.4%',color:'var(--purple)',icon:'🧪'},
-          ].map(s=>(
-            <div key={s.label} style={{background:'var(--bg2)',border:'1px solid var(--bd)',borderRadius:12,padding:16}}>
-              <div style={{display:'flex',justifyContent:'space-between',marginBottom:8}}>
-                <span style={{fontSize:11,color:'var(--tx2)'}}>{s.label}</span>
-                <span style={{fontSize:18}}>{s.icon}</span>
+            { label: 'Success Rate', val: '80%', color: 'var(--green)', icon: '✅', sub: '4 of 5 builds passed' },
+            { label: 'Avg Build Time', val: '4m 12s', color: 'var(--cyan)', icon: '⏱', sub: 'Including test & deploy' },
+            { label: 'Total Builds', val: '5', color: 'var(--blue)', icon: '🔄', sub: 'Since first commit' },
+            { label: 'Live URL', val: 'nextextile.xyz', color: 'var(--purple)', icon: '🌐', sub: 'AWS Amplify SSR' },
+          ].map(s => (
+            <div key={s.label} style={{ background: 'var(--bg2)', border: '1px solid var(--bd)', borderRadius: 12, padding: 16 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                <span style={{ fontSize: 11, color: 'var(--tx2)' }}>{s.label}</span>
+                <span style={{ fontSize: 18 }}>{s.icon}</span>
               </div>
-              <div style={{fontSize:24,fontWeight:700,color:s.color}}>{s.val}</div>
+              <div style={{ fontSize: 20, fontWeight: 700, color: s.color, marginBottom: 3 }}>{s.val}</div>
+              <div style={{ fontSize: 10, color: 'var(--tx3)' }}>{s.sub}</div>
             </div>
           ))}
         </div>
 
-        {/* YAML + History */}
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:22}}>
-          <div className="card" style={{marginBottom:0}}>
-            <div style={{fontSize:14,fontWeight:600,marginBottom:12}}>GitHub Actions Workflow</div>
-            <pre style={{background:'var(--bg3)',border:'1px solid var(--bd)',borderRadius:8,padding:16,fontSize:11,color:'var(--tx2)',overflow:'auto',maxHeight:480,lineHeight:1.5}}>{YAML}</pre>
+        {/* Latest Pipeline */}
+        <div className="card" style={{ marginBottom: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 600 }}>Build #88 — Deployed Successfully ✅</div>
+              <div style={{ fontSize: 11, color: 'var(--tx2)', marginTop: 3 }}>
+                main · a3f9b2c · "fix: domain DNS configuration update" · 2026-06-13 08:47
+              </div>
+            </div>
+            <a href="https://nextextile.xyz" target="_blank" rel="noreferrer" className="btn btn-g" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
+              🌐 View Live Site
+            </a>
           </div>
-          <div className="card" style={{marginBottom:0}}>
-            <div style={{fontSize:14,fontWeight:600,marginBottom:16}}>Build History</div>
-            <div style={{display:'flex',flexDirection:'column',gap:10}}>
-              {HISTORY.map(h=>(
-                <div key={h.id} style={{background:'var(--bg3)',border:'1px solid var(--bd)',borderRadius:8,padding:12}}>
-                  <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
-                    <span style={{fontFamily:'monospace',fontSize:12,color:'var(--cyan)',fontWeight:700}}>{h.id}</span>
-                    <span className={`tag ${SC[h.status]}`}>{h.status}</span>
+
+          {/* Pipeline stages */}
+          <div style={{ display: 'flex', alignItems: 'stretch', gap: 0, marginBottom: 24 }}>
+            {STAGES.map((s, i) => (
+              <div key={s.name} style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+                <div
+                  onClick={() => setActiveLog(i)}
+                  style={{
+                    flex: 1, background: 'rgba(63,185,80,.08)',
+                    border: `1px solid #3fb950`,
+                    borderRadius: 10, padding: '12px 10px', textAlign: 'center',
+                    cursor: 'pointer', transition: 'all .2s',
+                    outline: activeLog === i ? '2px solid #3fb950' : 'none',
+                    minWidth: 100
+                  }}>
+                  <div style={{ fontSize: 20, marginBottom: 5 }}>{s.icon}</div>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: '#3fb950', marginBottom: 2 }}>{s.name}</div>
+                  <div style={{ fontSize: 9, color: 'var(--tx3)', marginBottom: 4 }}>{s.desc}</div>
+                  <div style={{ fontSize: 10, color: '#3fb950', fontFamily: 'monospace' }}>✓ {s.time}</div>
+                </div>
+                {i < 5 && <div style={{ width: 20, height: 2, background: '#3fb950', flexShrink: 0, margin: '0 2px' }}></div>}
+              </div>
+            ))}
+          </div>
+
+          {/* Stage log */}
+          <div style={{ background: 'var(--bg3)', border: '1px solid var(--bd)', borderRadius: 8, padding: 16 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--green)' }}>📋 {LOGS[activeLog].stage} — Logs</span>
+              <span className="tag t-g">✓ {LOGS[activeLog].status.toUpperCase()}</span>
+            </div>
+            {LOGS[activeLog].lines.map((l, i) => (
+              <div key={i} style={{ fontSize: 12, fontFamily: 'monospace', color: l.startsWith('✓') ? 'var(--green)' : l.startsWith('+') ? 'var(--cyan)' : 'var(--tx2)', padding: '2px 0' }}>{l}</div>
+            ))}
+          </div>
+          <div style={{ fontSize: 10, color: 'var(--tx3)', marginTop: 8 }}>↑ Click on any stage to view its logs</div>
+        </div>
+
+        {/* YAML + History */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22 }}>
+          <div className="card" style={{ marginBottom: 0 }}>
+            <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 12 }}>GitHub Actions — Workflow File</div>
+            <pre style={{ background: 'var(--bg3)', border: '1px solid var(--bd)', borderRadius: 8, padding: 16, fontSize: 11, color: 'var(--tx2)', overflow: 'auto', maxHeight: 480, lineHeight: 1.6 }}>{YAML}</pre>
+          </div>
+          <div className="card" style={{ marginBottom: 0 }}>
+            <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 16 }}>Build History</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {HISTORY.map(h => (
+                <div key={h.id} style={{ background: 'var(--bg3)', border: `1px solid ${h.status === 'passed' ? 'var(--bd)' : 'var(--red)'}`, borderRadius: 8, padding: 12 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+                    <span style={{ fontFamily: 'monospace', fontSize: 12, color: 'var(--cyan)', fontWeight: 700 }}>{h.id}</span>
+                    <span className={`tag ${SC[h.status]}`}>{h.status === 'passed' ? '✓ passed' : '✕ failed'}</span>
                   </div>
-                  <div style={{fontSize:12,marginBottom:3}}>{h.msg}</div>
-                  <div style={{display:'flex',gap:14,fontSize:11,color:'var(--tx2)'}}>
-                    <span>🌿 {h.branch}</span><span>⏱ {h.time}</span><span>👤 {h.by}</span>
+                  <div style={{ fontSize: 12, marginBottom: 4 }}>{h.msg}</div>
+                  <div style={{ display: 'flex', gap: 12, fontSize: 10, color: 'var(--tx2)', flexWrap: 'wrap' }}>
+                    <span>🌿 {h.branch}</span>
+                    <span>⏱ {h.time}</span>
+                    <span>👤 {h.by}</span>
+                    <span>📅 {h.date}</span>
                   </div>
+                  {h.url && (
+                    <a href={h.url} target="_blank" rel="noreferrer" style={{ fontSize: 10, color: 'var(--cyan)', textDecoration: 'none', marginTop: 6, display: 'block' }}>🌐 {h.url}</a>
+                  )}
                 </div>
               ))}
             </div>
