@@ -14,7 +14,7 @@ const LOGS = [
   { stage:'Source Code', status:'PASSED', lines:[
     '✓ Checkout main branch',
     '✓ Pull commit a3f9b2c',
-    '→ Author: Ahmad Karimov',
+    '→ Author: Ibrohim Baxtiyorov',
     '→ Files changed: 14',
     '✓ Source ready in 3s',
   ]},
@@ -59,11 +59,11 @@ const LOGS = [
 ]
 
 const HISTORY = [
-  { id:'#88', msg:'fix: domain DNS configuration update', branch:'main', time:'3m 33s', status:'passed', by:'A. Karimov', date:'2026-06-13 08:47', url:'https://nextextile.xyz' },
-  { id:'#87', msg:'feat: add compare & improvements pages', branch:'main', time:'4m 12s', status:'passed', by:'A. Karimov', date:'2026-06-13 08:31', url:'https://nextextile.xyz' },
-  { id:'#86', msg:'fix: use npm install instead of npm ci', branch:'main', time:'3m 58s', status:'passed', by:'A. Karimov', date:'2026-06-13 08:04', url:'https://nextextile.xyz' },
-  { id:'#85', msg:'Initial commit: NexTextile cloud dashboard', branch:'main', time:'4m 44s', status:'passed', by:'A. Karimov', date:'2026-06-13 07:52', url:'https://nextextile.xyz' },
-  { id:'#84', msg:'chore: amplify.yml build configuration', branch:'main', time:'—', status:'failed', by:'A. Karimov', date:'2026-06-13 07:41', url:'' },
+  { id:'#88', msg:'fix: domain DNS configuration update', branch:'main', time:'3m 33s', status:'passed', by:'I. Baxtiyorov', date:'2026-06-13 08:47', url:'https://nextextile.xyz' },
+  { id:'#87', msg:'feat: add compare & improvements pages', branch:'main', time:'4m 12s', status:'passed', by:'I. Baxtiyorov', date:'2026-06-13 08:31', url:'https://nextextile.xyz' },
+  { id:'#86', msg:'fix: use npm install instead of npm ci', branch:'main', time:'3m 58s', status:'passed', by:'I. Baxtiyorov', date:'2026-06-13 08:04', url:'https://nextextile.xyz' },
+  { id:'#85', msg:'Initial commit: NexTextile cloud dashboard', branch:'main', time:'4m 44s', status:'passed', by:'I. Baxtiyorov', date:'2026-06-13 07:52', url:'https://nextextile.xyz' },
+  { id:'#84', msg:'chore: amplify.yml build configuration', branch:'main', time:'—', status:'failed', by:'I. Baxtiyorov', date:'2026-06-13 07:41', url:'' },
 ]
 
 const YAML = `name: NexTextile CI/CD Pipeline
