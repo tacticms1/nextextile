@@ -1,85 +1,147 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #0d1117;
-  --bg2: #161b22;
-  --bg3: #1c2128;
-  --blue: #58a6ff;
-  --cyan: #39d0d8;
-  --green: #3fb950;
-  --purple: #a371f7;
-  --orange: #f0883e;
-  --red: #f85149;
-  --tx: #e6edf3;
-  --tx2: #8b949e;
-  --tx3: #484f58;
-  --bd: #30363d;
+  --bg: #07091a;
+  --bg2: rgba(255,255,255,0.04);
+  --bg3: rgba(255,255,255,0.07);
+  --blue: #60a5fa;
+  --cyan: #22d3ee;
+  --green: #34d399;
+  --purple: #a78bfa;
+  --orange: #fbbf24;
+  --red: #f87171;
+  --tx: #f1f5f9;
+  --tx2: #94a3b8;
+  --tx3: #475569;
+  --bd: rgba(255,255,255,0.08);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background: var(--bg);
+  background: #07091a;
+  background-image:
+    radial-gradient(ellipse at 15% 15%, rgba(79,70,229,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 85%, rgba(6,182,212,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(167,139,250,0.08) 0%, transparent 50%);
+  background-attachment: fixed;
   color: var(--tx);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--bd); border-radius: 3px; }
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
 
-/* Cards */
+/* ── GLASS CARD ── */
 .card {
-  background: var(--bg2);
-  border: 1px solid var(--bd);
-  border-radius: 12px;
-  padding: 22px;
-  margin-bottom: 24px;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: border-color .25s, transform .25s;
+}
+.card:hover {
+  border-color: rgba(255,255,255,0.14);
 }
 
-/* Tags */
-.tag { display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:500; }
-.t-b { background:rgba(88,166,255,.12);color:var(--blue); }
-.t-g { background:rgba(63,185,80,.12);color:var(--green); }
-.t-o { background:rgba(240,136,62,.12);color:var(--orange); }
-.t-r { background:rgba(248,81,73,.12);color:var(--red); }
-.t-p { background:rgba(163,113,247,.12);color:var(--purple); }
-.t-c { background:rgba(57,208,216,.12);color:var(--cyan); }
-
-/* Table */
-.nt-table { width:100%;border-collapse:collapse; }
-.nt-table th { text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--tx2);padding:10px 14px;border-bottom:1px solid var(--bd); }
-.nt-table td { padding:11px 14px;font-size:12px;border-bottom:1px solid rgba(48,54,61,.5);vertical-align:middle; }
-.nt-table tr:last-child td { border-bottom:none; }
-.nt-table tr:hover td { background:rgba(255,255,255,.02); }
-
-/* Buttons */
-.btn { padding:8px 14px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px;transition:all .2s;text-decoration:none; }
-.btn-p { background:var(--blue);color:#fff; }
-.btn-p:hover { background:#79b8ff; }
-.btn-o { background:transparent;border:1px solid var(--bd);color:var(--tx2); }
-.btn-o:hover { border-color:var(--tx2);color:var(--tx); }
-.btn-g { background:var(--green);color:#000; }
-
-/* Form inputs */
-.nt-input { width:100%;background:var(--bg3);border:1px solid var(--bd);border-radius:7px;padding:9px 12px;color:var(--tx);font-size:13px;outline:none; }
-.nt-input:focus { border-color:var(--blue); }
-
-/* Progress bar */
-.prog { height:5px;background:var(--bg3);border-radius:3px;overflow:hidden; }
-.prog-bar { height:100%;border-radius:3px;transition:width .3s; }
-
-/* Pulse animation */
-@keyframes pulse {
-  0%,100% { opacity:1;transform:scale(1); }
-  50% { opacity:.5;transform:scale(1.2); }
+/* ── TAGS ── */
+.tag {
+  display: inline-flex; align-items: center;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; letter-spacing: .2px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--tx2);
 }
-@keyframes spin {
-  from { transform:rotate(0deg); }
-  to { transform:rotate(360deg); }
+.t-g { color:#34d399; background:rgba(52,211,153,0.1); border-color:rgba(52,211,153,0.25); }
+.t-b { color:#60a5fa; background:rgba(96,165,250,0.1); border-color:rgba(96,165,250,0.25); }
+.t-o { color:#fbbf24; background:rgba(251,191,36,0.1); border-color:rgba(251,191,36,0.25); }
+.t-r { color:#f87171; background:rgba(248,113,113,0.1); border-color:rgba(248,113,113,0.25); }
+.t-p { color:#a78bfa; background:rgba(167,139,250,0.1); border-color:rgba(167,139,250,0.25); }
+.t-c { color:#22d3ee; background:rgba(34,211,238,0.1); border-color:rgba(34,211,238,0.25); }
+
+/* ── TABLE ── */
+.nt-table { border-collapse: collapse; font-size: 13px; width: 100%; }
+.nt-table th {
+  text-align: left; padding: 11px 16px;
+  font-size: 10px; font-weight: 700; letter-spacing: .8px;
+  text-transform: uppercase; color: var(--tx3);
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
-@keyframes blink {
-  0%,100% { opacity:1; }
-  50% { opacity:.5; }
+.nt-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--tx2); vertical-align: middle;
 }
+.nt-table tr:last-child td { border-bottom: none; }
+.nt-table tr:hover td { background: rgba(255,255,255,0.03); }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px; border-radius: 10px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.06);
+  color: var(--tx2); transition: all .2s;
+  text-decoration: none; white-space: nowrap;
+}
+.btn:hover { background: rgba(255,255,255,0.11); color: var(--tx); border-color: rgba(255,255,255,0.2); }
+
+.btn-p {
+  background: linear-gradient(135deg,#4f46e5,#7c3aed);
+  border-color: transparent; color: #fff;
+  box-shadow: 0 4px 16px rgba(79,70,229,0.45);
+}
+.btn-p:hover { box-shadow: 0 6px 24px rgba(79,70,229,0.65); transform: translateY(-1px); color: #fff; }
+
+.btn-g {
+  background: linear-gradient(135deg,#059669,#34d399);
+  border-color: transparent; color: #fff;
+  box-shadow: 0 4px 16px rgba(5,150,105,0.4);
+}
+.btn-g:hover { box-shadow: 0 6px 24px rgba(5,150,105,0.6); transform: translateY(-1px); color: #fff; }
+
+.btn-o {
+  background: linear-gradient(135deg,#d97706,#fbbf24);
+  border-color: transparent; color: #000; font-weight: 700;
+  box-shadow: 0 4px 16px rgba(217,119,6,0.35);
+}
+.btn-o:hover { box-shadow: 0 6px 24px rgba(217,119,6,0.55); transform: translateY(-1px); }
+
+/* ── INPUT ── */
+.nt-input {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 10px; padding: 9px 14px;
+  color: var(--tx); font-size: 13px;
+  outline: none; transition: all .2s;
+  font-family: inherit;
+}
+.nt-input:focus {
+  border-color: rgba(96,165,250,0.5);
+  box-shadow: 0 0 0 3px rgba(96,165,250,0.08);
+  background: rgba(255,255,255,0.07);
+}
+.nt-input option { background: #1e1b4b; color: var(--tx); }
+
+/* ── PROGRESS ── */
+.prog { background: rgba(255,255,255,0.06); border-radius: 99px; height: 5px; overflow: hidden; }
+.prog-bar { height: 100%; border-radius: 99px; background: linear-gradient(90deg,var(--blue),var(--cyan)); transition: width .4s ease; }
+
+/* ── ANIMATIONS ── */
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.15)} }
+@keyframes spin { to{transform:rotate(360deg)} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+@keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }

@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={inter.className}>
       <body className="flex min-h-screen" style={{ background: 'var(--bg)', color: 'var(--tx)' }}>
         <Sidebar />
-        <main className="flex-1 flex flex-col" style={{ marginLeft: '250px' }}>
+        <main className="flex-1 flex flex-col" style={{ marginLeft: '240px', minHeight: '100vh' }}>
           {children}
         </main>
       </body>
