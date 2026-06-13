@@ -50,7 +50,7 @@ export default function Dashboard() {
             { label:'System Uptime', val:'99.97%', color:'var(--green)', icon:'✅', note:'↑ 0.02% vs last month' },
             { label:'Active Instances', val:inst, color:'var(--blue)', icon:'🖥️', note:'↑ Auto-scaled from 8' },
             { label:'Requests/min', val:rqpm.toLocaleString(), color:'var(--cyan)', icon:'⚡', note:'↑ Peak traffic' },
-            { label:'Cost Savings', val:'43%', color:'var(--purple)', icon:'🐷', note:'↑ vs on-premises' },
+            { label:'Cost Savings', val:'43%', color:'var(--purple)', icon:'💰', note:'↑ vs on-premises' },
           ].map(m => (
             <div key={m.label} style={{ background:'var(--bg2)', border:'1px solid var(--bd)', borderRadius:12, padding:18 }}>
               <div style={{ display:'flex', justifyContent:'space-between', marginBottom:10 }}>
