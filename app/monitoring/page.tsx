@@ -73,7 +73,7 @@ export default function Monitoring() {
             <div style={{fontSize:14,fontWeight:600,marginBottom:4}}>Auto-Scaling Events</div>
             <div style={{fontSize:11,color:'var(--tx2)',marginBottom:16}}>Instance count over time (last 60 min)</div>
             <Line height={100} data={{ labels:LABELS, datasets:[{ label:'Instances', data:INSTANCES_DATA, borderColor:'#58a6ff', backgroundColor:'rgba(88,166,255,.1)', fill:true, tension:.4, pointRadius:4, stepped:'before' as const }] }}
-              options={{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{grid:{color:'rgba(48,54,61,.5)'},ticks:{color:'#8b949e',font:{size:10}}}, y:{grid:{color:'rgba(48,54,61,.5)'},ticks:{color:'#8b949e',stepSize:2},min:6,max:16} } }} />
+              options={{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{grid:{color:'rgba(226,232,240,.8)'},ticks:{color:'#94a3b8',font:{size:10}}}, y:{grid:{color:'rgba(226,232,240,.8)'},ticks:{color:'#94a3b8',stepSize:2},min:6,max:16} } }} />
           </div>
           <div className="card" style={{marginBottom:0}}>
             <div style={{fontSize:14,fontWeight:600,marginBottom:4}}>Response Latency</div>
@@ -83,7 +83,7 @@ export default function Monitoring() {
               { label:'P95', data:LATENCY_P95, borderColor:'#f0883e', tension:.4, pointRadius:2 },
               { label:'P99', data:LATENCY_P99, borderColor:'#f85149', borderDash:[4,3], tension:.4, pointRadius:2 },
             ]}}
-              options={{ responsive:true, plugins:{legend:{labels:{color:'#8b949e',boxWidth:10,font:{size:10}}}}, scales:{ x:{grid:{color:'rgba(48,54,61,.5)'},ticks:{color:'#8b949e',font:{size:10}}}, y:{grid:{color:'rgba(48,54,61,.5)'},ticks:{color:'#8b949e',callback:(v:any)=>v+'ms'}} } }} />
+              options={{ responsive:true, plugins:{legend:{labels:{color:'#94a3b8',boxWidth:10,font:{size:10}}}}, scales:{ x:{grid:{color:'rgba(226,232,240,.8)'},ticks:{color:'#94a3b8',font:{size:10}}}, y:{grid:{color:'rgba(226,232,240,.8)'},ticks:{color:'#94a3b8',callback:(v:any)=>v+'ms'}} } }} />
           </div>
         </div>
 

@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Sidebar from '@/components/Sidebar'
+import { AuthProvider } from '@/components/AuthProvider'
+import AppShell from '@/components/AppShell'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'NexTextile Cloud Platform',
-  description: 'Cloud networking platform for NexTextile Wholesale Ltd — ERP, CRM, WMS',
+  description: 'Cloud networking platform for NexTextile Wholesale Ltd — ERP, CRM, WMS, SRM',
   icons: {
     icon: '/icon.svg',
     shortcut: '/icon.svg',
@@ -18,11 +19,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.className}>
-      <body className="flex min-h-screen" style={{ background: 'var(--bg)', color: 'var(--tx)' }}>
-        <Sidebar />
-        <main className="flex-1 flex flex-col" style={{ marginLeft: '240px', minHeight: '100vh' }}>
-          {children}
-        </main>
+      <body style={{ background: 'var(--bg)', color: 'var(--tx)' }}>
+        <AuthProvider>
+          <AppShell>{children}</AppShell>
+        </AuthProvider>
       </body>
     </html>
   )

@@ -80,7 +80,7 @@ export default function Orders() {
           <div className="card" style={{marginBottom:0}}>
             <div style={{fontSize:14,fontWeight:600,marginBottom:16}}>Monthly Revenue (2026)</div>
             <Bar height={80} data={{ labels:months, datasets:[{label:'Revenue',data:monthlyRev,backgroundColor:'rgba(88,166,255,.7)',borderRadius:4}] }}
-              options={{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{grid:{color:'rgba(48,54,61,.5)'},ticks:{color:'#8b949e'}}, y:{grid:{color:'rgba(48,54,61,.5)'},ticks:{color:'#8b949e',callback:(v:any)=>'$'+Math.round(v/1000)+'K'}}} }} />
+              options={{ responsive:true, plugins:{legend:{display:false}}, scales:{ x:{grid:{color:'rgba(226,232,240,.8)'},ticks:{color:'#94a3b8'}}, y:{grid:{color:'rgba(226,232,240,.8)'},ticks:{color:'#94a3b8',callback:(v:any)=>'$'+Math.round(v/1000)+'K'}}} }} />
           </div>
           <div className="card" style={{marginBottom:0}}>
             <div style={{fontSize:14,fontWeight:600,marginBottom:16}}>Order Status</div>

@@ -81,7 +81,7 @@ export default function Systems() {
               <div key={col.label} style={{borderRight:ci<2?'1px solid var(--bd)':'none'}}>
                 <div style={{padding:'12px 16px',background:'var(--bg3)',borderBottom:'1px solid var(--bd)',fontWeight:600,fontSize:13,color:col.color,textAlign:'center'}}>{col.label}</div>
                 {col.items.map(([k,v,s])=>(
-                  <div key={k} style={{padding:'10px 16px',borderBottom:'1px solid rgba(48,54,61,.5)',display:'flex',flexDirection:'column',gap:3}}>
+                  <div key={k} style={{padding:'10px 16px',borderBottom:'1px solid #f1f5f9',display:'flex',flexDirection:'column',gap:3}}>
                     <div style={{fontSize:10,color:'var(--tx3)',textTransform:'uppercase',letterSpacing:'.4px'}}>{k}</div>
                     <div style={{fontSize:12,color:s==='positive'?'var(--green)':s==='negative'?'var(--red)':'var(--tx2)'}}>{v}</div>
                   </div>

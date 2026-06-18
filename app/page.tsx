@@ -31,10 +31,10 @@ export default function Dashboard() {
 
   return (
     <>
-      <header style={{ background:'var(--bg2)', borderBottom:'1px solid var(--bd)', padding:'14px 28px', display:'flex', alignItems:'center', justifyContent:'space-between', position:'sticky', top:0, zIndex:50 }}>
+      <header style={{ background:'#fff', borderBottom:'1px solid #e2e8f0', padding:'14px 28px', display:'flex', alignItems:'center', justifyContent:'space-between', position:'sticky', top:0, zIndex:50 }}>
         <div>
-          <div style={{ fontSize:17, fontWeight:600 }}>Cloud Dashboard</div>
-          <div style={{ fontSize:11, color:'var(--tx2)', marginTop:2 }}>NexTextile Wholesale Ltd — AWS eu-west-1 | {time}</div>
+          <div style={{ fontSize:17, fontWeight:700, color:'#1e293b' }}>Cloud Dashboard</div>
+          <div style={{ fontSize:11, color:'#94a3b8', marginTop:2 }}>NexTextile Wholesale Ltd — AWS eu-north-1 | {time}</div>
         </div>
         <div style={{ display:'flex', alignItems:'center', gap:12 }}>
           <span className="tag t-g">● Production</span>
@@ -75,9 +75,9 @@ export default function Dashboard() {
                 { label:'Instances', data:INSTS, borderColor:'#f0883e', borderDash:[5,5], tension:.4, pointRadius:3, yAxisID:'y1' },
               ]
             }} options={{ responsive:true, plugins:{legend:{display:false}}, scales:{
-              x:{grid:{color:'rgba(48,54,61,.5)'},ticks:{color:'#8b949e',font:{size:10}}},
-              y:{grid:{color:'rgba(48,54,61,.5)'},ticks:{color:'#8b949e',font:{size:10}},position:'left'},
-              y1:{grid:{display:false},ticks:{color:'#f0883e',font:{size:10}},position:'right'}
+              x:{grid:{color:'rgba(226,232,240,.8)'},ticks:{color:'#94a3b8',font:{size:10}}},
+              y:{grid:{color:'rgba(226,232,240,.8)'},ticks:{color:'#94a3b8',font:{size:10}},position:'left'},
+              y1:{grid:{display:false},ticks:{color:'#f59e0b',font:{size:10}},position:'right'}
             }}} />
           </div>
           <div className="card" style={{ marginBottom:0 }}>
