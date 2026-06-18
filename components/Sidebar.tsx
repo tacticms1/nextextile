@@ -10,7 +10,7 @@ const ADMIN_NAV = [
   { section: 'Infratuzilma' },
   { href: '/network',   icon: '◎', label: 'Tarmoq',        desc: 'VPC arxitektura' },
   { href: '/cicd',      icon: '⟳', label: 'CI/CD Pipeline', desc: 'Avto deploy' },
-  { href: '/monitoring',icon: '▣', label: 'Monitoring',    desc: 'Avto-scaling' },
+  { href: '/monitoring',icon: '▣', label: 'Kuzatuv',       desc: 'Avto-scaling · Metriklar' },
   { section: 'Biznes' },
   { href: '/inventory', icon: '▦', label: 'Inventar',      desc: 'WMS · Ombor' },
   { href: '/customers', icon: '◉', label: 'Mijozlar (CRM)', desc: 'Buyurtmachilar' },

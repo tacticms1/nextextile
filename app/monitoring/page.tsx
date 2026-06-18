@@ -39,8 +39,8 @@ export default function Monitoring() {
     <>
       <header style={{background:'var(--bg2)',borderBottom:'1px solid var(--bd)',padding:'14px 28px',display:'flex',alignItems:'center',justifyContent:'space-between',position:'sticky',top:0,zIndex:50}}>
         <div>
-          <div style={{fontSize:17,fontWeight:600}}>Monitoring & Auto-Scaling</div>
-          <div style={{fontSize:11,color:'var(--tx2)',marginTop:2}}>CloudWatch — Real-time metrics · eu-west-1</div>
+          <div style={{fontSize:17,fontWeight:700,color:'#1e293b'}}>Kuzatuv & Avto-Scaling</div>
+          <div style={{fontSize:11,color:'#94a3b8',marginTop:2}}>CloudWatch — Jonli metriklar · eu-north-1</div>
         </div>
         <div style={{display:'flex',gap:10,alignItems:'center'}}>
           <span style={{fontSize:11,color:'var(--tx2)'}}>Live (3s refresh)</span>
