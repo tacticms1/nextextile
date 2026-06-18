@@ -32,10 +32,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setReady(true)
   }, [])
 
+  const ADMIN_ONLY = ['/', '/systems', '/network', '/cicd', '/monitoring', '/security', '/compare', '/improvements']
+
   useEffect(() => {
     if (!ready) return
-    if (!user && pathname !== '/login') router.replace('/login')
-    if (user  && pathname === '/login') router.replace('/')
+    if (!user && pathname !== '/login') { router.replace('/login'); return }
+    if (user && pathname === '/login') { router.replace(user.role === 'admin' ? '/' : '/shop'); return }
+    if (user && user.role === 'user' && ADMIN_ONLY.includes(pathname)) router.replace('/shop')
   }, [user, ready, pathname, router])
 
   const login = (email: string, password: string) => {

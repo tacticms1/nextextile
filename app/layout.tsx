@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/components/AuthProvider'
+import { CartProvider } from '@/components/CartProvider'
 import AppShell from '@/components/AppShell'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -21,7 +22,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={inter.className}>
       <body style={{ background: 'var(--bg)', color: 'var(--tx)' }}>
         <AuthProvider>
-          <AppShell>{children}</AppShell>
+          <CartProvider>
+            <AppShell>{children}</AppShell>
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>
